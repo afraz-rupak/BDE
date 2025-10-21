@@ -1,0 +1,25 @@
+version: 2
+
+sources:
+  - name: bronze
+    schema: bronze
+    tables:
+      - name: raw_listings
+        columns:
+          - name: listing_id
+          - name: scraped_date
+          - name: host_id
+          
+      - name: raw_census_g01
+        columns:
+          - name: lga_code_2016
+            
+      - name: raw_census_g02
+        columns:
+          - name: lga_code_2016
+          
+      - name: raw_lga_code
+        columns:
+          - name: lga_code
+          
+      - name: raw_lga_suburb

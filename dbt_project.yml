@@ -1,0 +1,47 @@
+name: 'airbnb_sydney_analytics'
+version: '1.0.0'
+config-version: 2
+
+profile: 'airbnb_sydney'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  airbnb_sydney_analytics:
+    # Bronze layer - raw data (already loaded by Airflow)
+    bronze:
+      +materialized: table
+      +schema: bronze
+      
+    # Silver layer - cleaned and standardized data
+    silver:
+      +materialized: table
+      +schema: silver
+      
+    # Gold layer - dimensional model
+    gold:
+      dimensions:
+        +materialized: table
+        +schema: gold
+      facts:
+        +materialized: table
+        +schema: gold
+      datamart:
+        +materialized: view
+        +schema: gold
+
+snapshots:
+  airbnb_sydney_analytics:
+    +target_schema: silver
+    +strategy: timestamp
+    +unique_key: id
