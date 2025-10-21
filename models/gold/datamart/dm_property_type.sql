@@ -46,6 +46,7 @@ with_calculations AS (
         year_month,
         month_start_date,
         
+        -- Active listings rate
         CASE 
             WHEN total_listings > 0 
             THEN ROUND((active_listings::NUMERIC / total_listings) * 100, 2)
@@ -54,8 +55,8 @@ with_calculations AS (
         
         min_price,
         max_price,
-        ROUND(median_price, 2) as median_price,
-        ROUND(avg_price, 2) as avg_price,
+        ROUND(CAST(median_price AS NUMERIC), 2) as median_price,
+        ROUND(CAST(avg_price AS NUMERIC), 2) as avg_price,
         
         distinct_hosts,
         CASE 
@@ -64,12 +65,12 @@ with_calculations AS (
             ELSE 0
         END as superhost_rate,
         
-        ROUND(avg_review_score, 2) as avg_review_score,
+        ROUND(CAST(avg_review_score AS NUMERIC), 2) as avg_review_score,
         
         total_stays,
         CASE 
             WHEN active_listings > 0 
-            THEN ROUND(total_estimated_revenue / active_listings, 2)
+            THEN ROUND((total_estimated_revenue::NUMERIC / active_listings), 2)
             ELSE 0
         END as avg_estimated_revenue_per_active_listing,
         

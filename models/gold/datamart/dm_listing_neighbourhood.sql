@@ -53,11 +53,11 @@ with_calculations AS (
             ELSE 0
         END as active_listing_rate,
         
-        -- Price metrics
+        -- Price metrics - CAST TO NUMERIC BEFORE ROUND
         min_price,
         max_price,
-        ROUND(median_price, 2) as median_price,
-        ROUND(avg_price, 2) as avg_price,
+        ROUND(CAST(median_price AS NUMERIC), 2) as median_price,
+        ROUND(CAST(avg_price AS NUMERIC), 2) as avg_price,
         
         -- Host metrics
         distinct_hosts,
@@ -67,14 +67,14 @@ with_calculations AS (
             ELSE 0
         END as superhost_rate,
         
-        -- Review score
-        ROUND(avg_review_score, 2) as avg_review_score,
+        -- Review score - CAST TO NUMERIC BEFORE ROUND
+        ROUND(CAST(avg_review_score AS NUMERIC), 2) as avg_review_score,
         
         -- Stays and revenue
         total_stays,
         CASE 
             WHEN active_listings > 0 
-            THEN ROUND(total_estimated_revenue / active_listings, 2)
+            THEN ROUND((total_estimated_revenue::NUMERIC / active_listings), 2)
             ELSE 0
         END as avg_estimated_revenue_per_active_listing,
         
